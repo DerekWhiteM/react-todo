@@ -27,18 +27,22 @@ export const ViewTaskList = () => {
                     </h1>
                     <CreateTask taskList={taskList} />
                     <ul className="mt-4">
-                        {listTasks.map(task => (
-                            <li
-                                key={task.id}
-                                className="flex gap-2 px-2 pt-2 hover:bg-gray-100 cursor-pointer rounded-sm"
-                                onClick={() => navigate(`/list/${taskListId}/task/${task.id}`)}
-                            >
-                                <Checkbox className="mt-[.33rem]" />
-                                <div className="w-full border-b border-solid border-gray-200 pb-2">
-                                    <p className="w-full px-1">{task.title}</p>
-                                </div>
-                            </li>
-                        ))}
+                        {listTasks.map(task => {
+                            console.log(task);
+                            return (
+                                <li
+                                    key={task.id}
+                                    className="flex gap-2 px-2 pt-2 hover:bg-gray-100 cursor-pointer rounded-sm"
+                                    onClick={() => navigate(`/list/${taskListId}/task/${task.id}`)}
+                                >
+                                    <Checkbox className="mt-[.33rem]" />
+                                    <div className="flex space-between w-full border-b border-solid border-gray-200 pb-2">
+                                        <p className="w-full px-1">{task.title}</p>
+                                        <p className="text-nowrap">{task.dueDate ? new Date(task.dueDate).toDateString() : ""}</p>
+                                    </div>
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
             )}

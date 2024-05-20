@@ -5,7 +5,7 @@ export class Task {
     taskListId: number | null;
     title: string;
     description: string;
-    dueDate: Date | null;
+    dueDate: number | null;
     recurrence: Recurrence;
     isComplete: boolean;
 
@@ -14,7 +14,7 @@ export class Task {
         taskListId: number | null,
         title: string,
         description: string,
-        dueDate: Date | null,
+        dueDate: number | null,
         recurrence: Recurrence,
         isComplete: boolean,
     ) {
@@ -32,7 +32,7 @@ export type TaskUpdate = {
     taskListId?: number | null;
     title?: string;
     description?: string;
-    dueDate?: Date | null;
+    dueDate?: number | null;
     recurrence?: Recurrence;
     isComplete?: boolean;
 }

@@ -22,7 +22,7 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
     }
 
     function onDateSelect(value: Date) {
-        updateTask(task.id, { dueDate: value });
+        updateTask(task.id, { dueDate: value.getTime() });
     }
 
     return (
@@ -63,7 +63,7 @@ export function DatePicker({
     date,
     onSelect,
 }: {
-    date: Date | null;
+    date: number | null;
     onSelect: (value: Date) => void;
 }) {
     return (
@@ -83,7 +83,7 @@ export function DatePicker({
             <PopoverContent className="w-auto p-0">
                 <Calendar
                     mode="single"
-                    selected={date || undefined}
+                    selected={date ? new Date(date) : undefined}
                     onSelect={onSelect as SelectSingleEventHandler}
                     initialFocus
                 />
