@@ -30,7 +30,7 @@ export const Sidebar = () => {
                                 onClick={() => navigate("/all-tasks")}
                             >
                                 <Archive size={18} />
-                                <p>All tasks</p>
+                                <p>All Tasks</p>
                             </button>
                             <button
                                 className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-gray-100 cursor-pointer"

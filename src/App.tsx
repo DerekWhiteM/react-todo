@@ -4,7 +4,7 @@ import { Inbox } from "./routes/inbox";
 import { Index } from "./routes/index";
 import { Layout } from "./components/Layout";
 import { Route, Routes } from "react-router-dom";
-import { Task } from "./model/task";
+import { Task, TaskUpdate } from "./model/task";
 import { TaskList } from "./model/task-list";
 import { TaskManager } from "./model/task-manager";
 import { useScreenDimensions } from "./hooks/use-screen-dimensions";
@@ -14,6 +14,7 @@ export const AppContext = createContext({
     tasks: [] as Task[],
     taskLists: [] as TaskList[],
     createTask: (() => {}) as (title: string, taskListId: number | null) => void,
+    updateTask: (() => {}) as (taskId: number, fields: TaskUpdate) => void,
     createTaskList: (() => {}) as (title: string) => void,
     isSidebarOpen: true,
     toggleSidebar: () => {},
@@ -27,6 +28,11 @@ function App() {
 
     function createTask(title: string, taskListId: number | null) {
         TaskManager.createTask(title, taskListId, "", null, "none");
+        setTasks([...TaskManager.getTasks()]);
+    }
+
+    function updateTask(taskId: number, fields: TaskUpdate) {
+        TaskManager.updateTask(taskId, fields);
         setTasks([...TaskManager.getTasks()]);
     }
 
@@ -56,6 +62,7 @@ function App() {
                 tasks,
                 taskLists,
                 createTask,
+                updateTask,
                 createTaskList,
                 isSidebarOpen,
                 toggleSidebar,

@@ -27,3 +27,12 @@ export class Task {
         this.isComplete = isComplete;
     }
 }
+
+export type TaskUpdate = {
+    taskListId?: number | null;
+    title?: string;
+    description?: string;
+    dueDate?: Date | null;
+    recurrence?: Recurrence;
+    isComplete?: boolean;
+}

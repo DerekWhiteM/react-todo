@@ -1,4 +1,4 @@
-import { Recurrence, Task } from "./task";
+import { Recurrence, Task, TaskUpdate } from "./task";
 import { TaskList } from "./task-list";
 
 export const TaskManager = (() => {
@@ -49,11 +49,21 @@ export const TaskManager = (() => {
         return task;
     }
 
+    function updateTask(taskId: number, fields: TaskUpdate) {
+        const task = tasks.find(e => e.id === taskId);
+        if (!task) {
+            throw "Invalid taskId";
+        }
+        Object.assign(task, fields);
+        save();
+    }
+
     return {
         getTasks,
         getTaskLists,
         createTaskList,
         createTask,
         load,
+        updateTask,
     };
 })();

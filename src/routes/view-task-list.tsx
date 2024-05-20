@@ -42,7 +42,7 @@ export const ViewTaskList = () => {
                     </ul>
                 </div>
             )}
-            {task && <ViewTask task={task} />}
+            {task && <ViewTask task={task} onClose={() => navigate(`/list/${taskListId}`)} />}
         </div>
     );
 };

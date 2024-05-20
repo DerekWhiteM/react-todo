@@ -14,16 +14,17 @@ const formSchema = z.object({
 export const CreateTask = ({ taskList }: { taskList: TaskList | null }) => {
     const { createTask } = useContext(AppContext);
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        createTask(values.name, taskList ? taskList.id : null);
-    }
-
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
         },
     });
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        createTask(values.name, taskList ? taskList.id : null);
+        form.reset();
+    }
 
     return (
         <Form {...form}>
