@@ -1,14 +1,21 @@
 import { AppContext } from "../App";
 import { Button } from "../components/ui/button";
 import { Calendar } from "../components/ui/calendar";
-import { CalendarIcon, X } from "lucide-react";
-import { ChangeEvent, FocusEvent, useContext } from "react";
+import { CalendarIcon, Check, ChevronsUpDown, X } from "lucide-react";
+import { ChangeEvent, FocusEvent, useContext, useState } from "react";
 import { Checkbox } from "../components/ui/checkbox";
 import { cn } from "../lib/utils";
 import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
 import { SelectSingleEventHandler } from "react-day-picker";
 import { Task } from "../model/task";
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+} from "../components/ui/command";
 
 export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void }) => {
     const { updateTask } = useContext(AppContext);
@@ -41,7 +48,7 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
                     </button>
                 </div>
             </div>
-            <div className="p-4">
+            <div className="p-4 h-full">
                 <input
                     className="w-full font-semibold text-lg outline-none mb-2"
                     value={task.title}
@@ -55,17 +62,14 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
                     onChange={onDescriptionChange}
                 />
             </div>
+            <div className="w-full flex justify-center p-4">
+                <ListSelector taskId={task.id} taskListId={task.taskListId} />
+            </div>
         </div>
     );
 };
 
-export function DatePicker({
-    date,
-    onSelect,
-}: {
-    date: number | null;
-    onSelect: (value: Date) => void;
-}) {
+function DatePicker({ date, onSelect }: { date: number | null; onSelect: (value: Date) => void }) {
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -87,6 +91,62 @@ export function DatePicker({
                     onSelect={onSelect as SelectSingleEventHandler}
                     initialFocus
                 />
+            </PopoverContent>
+        </Popover>
+    );
+}
+
+function ListSelector({ taskId, taskListId }: { taskId: number; taskListId: number | null }) {
+    const [open, setOpen] = useState(false);
+    const { taskLists, updateTask } = useContext(AppContext);
+
+    function onSelect(currentValue: string) {
+        const currentValueInt = parseInt(currentValue);
+        updateTask(taskId, { taskListId: currentValueInt });
+    }
+
+    const options = taskLists.map(taskList => ({
+        value: taskList.id,
+        label: taskList.title,
+    }));
+
+    return (
+        <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-[200px] justify-between"
+                >
+                    {taskListId
+                        ? options.find(option => option.value === taskListId)?.label
+                        : "Select list..."}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0">
+                <Command>
+                    <CommandInput placeholder="Search list..." />
+                    <CommandEmpty>No list found.</CommandEmpty>
+                    <CommandGroup>
+                        {options.map(option => (
+                            <CommandItem
+                                key={option.value}
+                                value={option.value + ""}
+                                onSelect={onSelect}
+                            >
+                                <Check
+                                    className={cn(
+                                        "mr-2 h-4 w-4",
+                                        taskListId === option.value ? "opacity-100" : "opacity-0"
+                                    )}
+                                />
+                                {option.label}
+                            </CommandItem>
+                        ))}
+                    </CommandGroup>
+                </Command>
             </PopoverContent>
         </Popover>
     );
