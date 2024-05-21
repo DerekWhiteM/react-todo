@@ -39,8 +39,8 @@ export const ViewTaskList = () => {
                     <CreateTask taskList={taskList} />
                     <ul className="mt-4">
                         {listTasks.map(task => (
-                            <li key={task.id} className="flex items-center gap-2 cursor-pointer">
-                                <Checkbox className="mt-[.33rem]" />
+                            <li key={task.id} className="flex gap-2 cursor-pointer">
+                                <Checkbox className="mt-[.75rem]" />
                                 <ContextMenu>
                                     <ContextMenuTrigger className="w-full border-b border-solid border-gray-200">
                                         <div
