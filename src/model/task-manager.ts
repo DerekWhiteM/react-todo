@@ -1,5 +1,5 @@
 import { Recurrence, Task, TaskUpdate } from "./task";
-import { TaskList } from "./task-list";
+import { TaskList, TaskListUpdate } from "./task-list";
 
 export const TaskManager = (() => {
     let tasks: Task[] = [];
@@ -31,11 +31,20 @@ export const TaskManager = (() => {
         return taskList;
     }
 
+    function updateTaskList(taskListId: number, fields: TaskListUpdate) {
+        const taskList = taskLists.find(e => e.id === taskListId);
+        if (!taskList) {
+            throw "Invalid taskListId";
+        }
+        Object.assign(taskList, fields);
+        save();
+    }
+
     function createTask(
         title: string,
         taskListId: number | null,
         description: string,
-        dueDate: Date | null,
+        dueDate: number | null,
         recurrence: Recurrence,
     ) {
         if (taskListId !== null) {
@@ -62,8 +71,9 @@ export const TaskManager = (() => {
         getTasks,
         getTaskLists,
         createTaskList,
+        updateTaskList,
         createTask,
-        load,
         updateTask,
+        load,
     };
 })();

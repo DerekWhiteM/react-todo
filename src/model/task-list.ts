@@ -7,3 +7,7 @@ export class TaskList {
         this.title = title;
     }
 }
+
+export type TaskListUpdate = {
+    title: string;
+};
