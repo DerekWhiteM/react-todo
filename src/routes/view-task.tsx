@@ -16,6 +16,7 @@ import {
     CommandInput,
     CommandItem,
 } from "../components/ui/command";
+import { CheckedState } from "@radix-ui/react-checkbox";
 
 export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void }) => {
     const { updateTask } = useContext(AppContext);
@@ -32,11 +33,16 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
         updateTask(task.id, { dueDate: value.getTime() });
     }
 
+    function onCheckedChange(taskId: number, checked: CheckedState) {
+        if (checked === "indeterminate") return;
+        updateTask(taskId, { isComplete: checked });
+    }
+
     return (
         <div className="border-l border-solid border-gray-200 w-[38.2rem] flex flex-col text-gray-700">
             <div className="pt-4 px-4 pb-2 border-b border-solid border-gray-200 flex items-center">
                 <div className="pr-4 mr-2 border-r border-solid border-gray-200 flex">
-                    <Checkbox />
+                    <Checkbox checked={task.isComplete} onCheckedChange={(checked: CheckedState) => onCheckedChange(task.id, checked)} />
                 </div>
                 <DatePicker date={task.dueDate} onSelect={onDateSelect} />
                 <div className="ml-auto border-l border-solid border-gray-200 pl-2">

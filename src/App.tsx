@@ -96,7 +96,7 @@ function App() {
                     <Route index element={<Index />} />
                     <Route path="/all-tasks" element={<AllTasks />} />
                     <Route path="/inbox" element={<Inbox />} />
-                    <Route path="/completed" element={<Completed />} />
+                    <Route path="/completed/task?/:taskId?" element={<Completed />} />
                     <Route path="/list/:taskListId/task?/:taskId?" element={<ViewTaskList />} />
                 </Route>
             </Routes>

@@ -11,12 +11,13 @@ import {
     ContextMenuItem,
     ContextMenuTrigger,
 } from "../components/ui/context-menu";
+import { CheckedState } from "@radix-ui/react-checkbox";
 
 export const ViewTaskList = () => {
     const { taskListId, taskId } = useParams();
-    const { tasks, taskLists, deleteTask, updateTaskList } = useContext(AppContext);
+    const { tasks, taskLists, deleteTask, updateTaskList, updateTask } = useContext(AppContext);
     const taskList = taskLists.find(l => l.id === Number(taskListId)) || null;
-    const listTasks = tasks.filter(e => e.taskListId === Number(taskListId));
+    const listTasks = tasks.filter(e => e.taskListId === Number(taskListId) && !e.isComplete);
     const task = listTasks.find(e => e.id === Number(taskId)) || null;
     const navigate = useNavigate();
     const { width } = useScreenDimensions();
@@ -26,13 +27,18 @@ export const ViewTaskList = () => {
         updateTaskList(Number(taskListId), { title: e.target.value });
     }
 
+    function onCheckedChange(taskId: number, checked: CheckedState) {
+        if (checked === "indeterminate") return;
+        updateTask(taskId, { isComplete: checked });
+    }
+
     const listItems = (() => {
         const items: JSX.Element[] = [];
         for (const task of tasks) {
             if (task.isComplete) continue;
             items.push(
                 <li key={task.id} className="flex gap-2 cursor-pointer">
-                    <Checkbox className="mt-[.75rem]" />
+                    <Checkbox className="mt-[.75rem]" checked={task.isComplete} onCheckedChange={(checked: CheckedState) => onCheckedChange(task.id, checked)} />
                     <ContextMenu>
                         <ContextMenuTrigger className="w-full border-b border-solid border-gray-200">
                             <div
