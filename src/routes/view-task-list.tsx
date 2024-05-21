@@ -5,10 +5,16 @@ import { ChangeEvent, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useScreenDimensions } from "../hooks/use-screen-dimensions";
 import { ViewTask } from "./view-task";
+import {
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger,
+} from "../components/ui/context-menu";
 
 export const ViewTaskList = () => {
     const { taskListId, taskId } = useParams();
-    const { tasks, taskLists, updateTaskList } = useContext(AppContext);
+    const { tasks, taskLists, deleteTask, updateTaskList } = useContext(AppContext);
     const taskList = taskLists.find(l => l.id === Number(taskListId)) || null;
     const listTasks = tasks.filter(e => e.taskListId === Number(taskListId));
     const task = listTasks.find(e => e.id === Number(taskId)) || null;
@@ -33,18 +39,28 @@ export const ViewTaskList = () => {
                     <CreateTask taskList={taskList} />
                     <ul className="mt-4">
                         {listTasks.map(task => (
-                            <li
-                                key={task.id}
-                                className="flex gap-2 px-2 pt-2 hover:bg-gray-100 cursor-pointer rounded-sm"
-                                onClick={() => navigate(`/list/${taskListId}/task/${task.id}`)}
-                            >
+                            <li key={task.id} className="flex items-center gap-2 cursor-pointer">
                                 <Checkbox className="mt-[.33rem]" />
-                                <div className="flex space-between w-full border-b border-solid border-gray-200 pb-2">
-                                    <p className="w-full px-1">{task.title}</p>
-                                    <p className="text-nowrap">
-                                        {task.dueDate ? new Date(task.dueDate).toDateString() : ""}
-                                    </p>
-                                </div>
+                                <ContextMenu>
+                                    <ContextMenuTrigger className="w-full border-b border-solid border-gray-200">
+                                        <div
+                                            className="flex space-between w-full pb-2 hover:bg-gray-100 rounded-sm px-1 pt-2"
+                                            onClick={() =>
+                                                navigate(`/list/${taskListId}/task/${task.id}`)
+                                            }
+                                        >
+                                            <p className="w-full">{task.title}</p>
+                                            <p className="text-nowrap">
+                                                {task.dueDate
+                                                    ? new Date(task.dueDate).toDateString()
+                                                    : ""}
+                                            </p>
+                                        </div>
+                                    </ContextMenuTrigger>
+                                    <ContextMenuContent>
+                                        <ContextMenuItem onClick={() => deleteTask(task.id)}>Delete</ContextMenuItem>
+                                    </ContextMenuContent>
+                                </ContextMenu>
                             </li>
                         ))}
                     </ul>

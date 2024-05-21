@@ -3,9 +3,15 @@ import { Archive, ChevronsRight, Inbox, List } from "lucide-react";
 import { CreateTaskList } from "./CreateTaskList";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger,
+} from "./ui/context-menu";
 
 export const Sidebar = () => {
-    const { isSidebarOpen, toggleSidebar, taskLists } = useContext(AppContext);
+    const { isSidebarOpen, toggleSidebar, taskLists, deleteTaskList } = useContext(AppContext);
     const nav = useNavigate();
     function navigate(path: string) {
         nav(path);
@@ -48,13 +54,24 @@ export const Sidebar = () => {
                             <ul>
                                 {taskLists.map(list => (
                                     <li key={list.title}>
-                                        <button
-                                            className="flex gap-2 items-center hover:bg-gray-100 p-2 rounded-sm w-full text-left text-[.95rem]"
-                                            onClick={() => navigate(`/list/${list.id}`)}
-                                        >
-                                            <List size={18} />
-                                            <p>{list.title}</p>
-                                        </button>
+                                        <ContextMenu>
+                                            <ContextMenuTrigger>
+                                                <button
+                                                    className="flex gap-2 items-center hover:bg-gray-100 p-2 rounded-sm w-full text-left text-[.95rem]"
+                                                    onClick={() => navigate(`/list/${list.id}`)}
+                                                >
+                                                    <List size={18} />
+                                                    <p>{list.title}</p>
+                                                </button>
+                                            </ContextMenuTrigger>
+                                            <ContextMenuContent>
+                                                <ContextMenuItem
+                                                    onClick={() => deleteTaskList(list.id)}
+                                                >
+                                                    Delete
+                                                </ContextMenuItem>
+                                            </ContextMenuContent>
+                                        </ContextMenu>
                                     </li>
                                 ))}
                             </ul>

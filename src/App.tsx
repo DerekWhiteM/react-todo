@@ -15,8 +15,10 @@ export const AppContext = createContext({
     taskLists: [] as TaskList[],
     createTask: (() => {}) as (title: string, taskListId: number | null) => void,
     updateTask: (() => {}) as (taskId: number, fields: TaskUpdate) => void,
+    deleteTask: (() => {}) as (taskId: number) => void,
     createTaskList: (() => {}) as (title: string) => void,
     updateTaskList: (() => {}) as (taskId: number, fields: TaskListUpdate) => void,
+    deleteTaskList: (() => {}) as (taskListId: number) => void,
     isSidebarOpen: true,
     toggleSidebar: () => {},
 });
@@ -37,6 +39,11 @@ function App() {
         setTasks([...TaskManager.getTasks()]);
     }
 
+    function deleteTask(taskId: number) {
+        TaskManager.deleteTask(taskId);
+        setTasks([...TaskManager.getTasks()]);
+    }
+
     function createTaskList(title: string) {
         TaskManager.createTaskList(title);
         setTaskLists([...TaskManager.getTaskLists()]);
@@ -44,6 +51,12 @@ function App() {
 
     function updateTaskList(taskListId: number, fields: TaskListUpdate) {
         TaskManager.updateTaskList(taskListId, fields);
+        setTaskLists([...TaskManager.getTaskLists()]);
+    }
+
+    function deleteTaskList(taskListId: number) {
+        TaskManager.deleteTaskList(taskListId);
+        setTasks([...TaskManager.getTasks()]);
         setTaskLists([...TaskManager.getTaskLists()]);
     }
 
@@ -69,8 +82,10 @@ function App() {
                 taskLists,
                 createTask,
                 updateTask,
+                deleteTask,
                 createTaskList,
                 updateTaskList,
+                deleteTaskList,
                 isSidebarOpen,
                 toggleSidebar,
             }}

@@ -23,23 +23,6 @@ export const TaskManager = (() => {
         return taskLists;
     }
 
-    function createTaskList(title: string) {
-        const id = taskLists.length > 0 ? taskLists[taskLists.length - 1].id + 1 : 1;
-        const taskList = new TaskList(id, title);
-        taskLists.push(taskList);
-        save();
-        return taskList;
-    }
-
-    function updateTaskList(taskListId: number, fields: TaskListUpdate) {
-        const taskList = taskLists.find(e => e.id === taskListId);
-        if (!taskList) {
-            throw "Invalid taskListId";
-        }
-        Object.assign(taskList, fields);
-        save();
-    }
-
     function createTask(
         title: string,
         taskListId: number | null,
@@ -67,13 +50,65 @@ export const TaskManager = (() => {
         save();
     }
 
+    function deleteTask(taskId: number) {
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].id === taskId) {
+                tasks.splice(i, 1);
+                save();
+                return;
+            }
+        }
+        throw "Invalid taskId";
+    }
+
+    function createTaskList(title: string) {
+        const id = taskLists.length > 0 ? taskLists[taskLists.length - 1].id + 1 : 1;
+        const taskList = new TaskList(id, title);
+        taskLists.push(taskList);
+        save();
+        return taskList;
+    }
+
+    function updateTaskList(taskListId: number, fields: TaskListUpdate) {
+        const taskList = taskLists.find(e => e.id === taskListId);
+        if (!taskList) {
+            throw "Invalid taskListId";
+        }
+        Object.assign(taskList, fields);
+        save();
+    }
+
+    function deleteTaskList(taskListId: number) {
+        // First get the index of the list
+        let idx: number | null = null;
+        for (let i = 0; i < taskLists.length; i++) {
+            if (taskLists[i].id === taskListId) {
+                idx = i;
+            }
+        }
+        if (idx == null) {
+            throw "Invalid taskListId";
+        }
+        // Then delete all the tasks
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].taskListId === taskListId) {
+                tasks.splice(i, 1);
+            }
+        }
+        // Finally delete the list
+        taskLists.splice(idx, 1);
+        save();
+    }
+
     return {
         getTasks,
+        createTask,
+        updateTask,
+        deleteTask,
         getTaskLists,
         createTaskList,
         updateTaskList,
-        createTask,
-        updateTask,
+        deleteTaskList,
         load,
     };
 })();
