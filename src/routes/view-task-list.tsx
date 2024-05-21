@@ -26,6 +26,37 @@ export const ViewTaskList = () => {
         updateTaskList(Number(taskListId), { title: e.target.value });
     }
 
+    const listItems = (() => {
+        const items: JSX.Element[] = [];
+        for (const task of tasks) {
+            if (task.isComplete) continue;
+            items.push(
+                <li key={task.id} className="flex gap-2 cursor-pointer">
+                    <Checkbox className="mt-[.75rem]" />
+                    <ContextMenu>
+                        <ContextMenuTrigger className="w-full border-b border-solid border-gray-200">
+                            <div
+                                className="flex space-between w-full pb-2 hover:bg-gray-100 rounded-sm px-1 pt-2"
+                                onClick={() => navigate(`/list/${taskListId}/task/${task.id}`)}
+                            >
+                                <p className="w-full">{task.title}</p>
+                                <p className="text-nowrap">
+                                    {task.dueDate ? new Date(task.dueDate).toDateString() : ""}
+                                </p>
+                            </div>
+                        </ContextMenuTrigger>
+                        <ContextMenuContent>
+                            <ContextMenuItem onClick={() => deleteTask(task.id)}>
+                                Delete
+                            </ContextMenuItem>
+                        </ContextMenuContent>
+                    </ContextMenu>
+                </li>
+            );
+        }
+        return items;
+    })();
+
     return (
         <div className="flex h-full">
             {!hideList && (
@@ -37,33 +68,7 @@ export const ViewTaskList = () => {
                         value={taskList.title}
                     />
                     <CreateTask taskList={taskList} />
-                    <ul className="mt-4">
-                        {listTasks.map(task => (
-                            <li key={task.id} className="flex gap-2 cursor-pointer">
-                                <Checkbox className="mt-[.75rem]" />
-                                <ContextMenu>
-                                    <ContextMenuTrigger className="w-full border-b border-solid border-gray-200">
-                                        <div
-                                            className="flex space-between w-full pb-2 hover:bg-gray-100 rounded-sm px-1 pt-2"
-                                            onClick={() =>
-                                                navigate(`/list/${taskListId}/task/${task.id}`)
-                                            }
-                                        >
-                                            <p className="w-full">{task.title}</p>
-                                            <p className="text-nowrap">
-                                                {task.dueDate
-                                                    ? new Date(task.dueDate).toDateString()
-                                                    : ""}
-                                            </p>
-                                        </div>
-                                    </ContextMenuTrigger>
-                                    <ContextMenuContent>
-                                        <ContextMenuItem onClick={() => deleteTask(task.id)}>Delete</ContextMenuItem>
-                                    </ContextMenuContent>
-                                </ContextMenu>
-                            </li>
-                        ))}
-                    </ul>
+                    <ul className="mt-4">{listItems}</ul>
                 </div>
             )}
             {task && <ViewTask task={task} onClose={() => navigate(`/list/${taskListId}`)} />}

@@ -9,6 +9,7 @@ import { TaskList, TaskListUpdate } from "./model/task-list";
 import { TaskManager } from "./model/task-manager";
 import { useScreenDimensions } from "./hooks/use-screen-dimensions";
 import { ViewTaskList } from "./routes/view-task-list";
+import { Completed } from "./routes/completed";
 
 export const AppContext = createContext({
     tasks: [] as Task[],
@@ -95,6 +96,7 @@ function App() {
                     <Route index element={<Index />} />
                     <Route path="/all-tasks" element={<AllTasks />} />
                     <Route path="/inbox" element={<Inbox />} />
+                    <Route path="/completed" element={<Completed />} />
                     <Route path="/list/:taskListId/task?/:taskId?" element={<ViewTaskList />} />
                 </Route>
             </Routes>

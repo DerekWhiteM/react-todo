@@ -1,5 +1,5 @@
 import { AppContext } from "../App";
-import { Archive, ChevronsRight, Inbox, List } from "lucide-react";
+import { Archive, ChevronsRight, Inbox, List, SquareCheck } from "lucide-react";
 import { CreateTaskList } from "./CreateTaskList";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +46,7 @@ export const Sidebar = () => {
                                 <p>Inbox</p>
                             </button>
                         </div>
-                        <div className="pt-4 text-left">
+                        <div className="py-4 text-left">
                             <div className="flex items-center px-2 mb-4 justify-between">
                                 <p className="text-[.95rem]">Lists</p>
                                 <CreateTaskList />
@@ -75,6 +75,15 @@ export const Sidebar = () => {
                                     </li>
                                 ))}
                             </ul>
+                        </div>
+                        <div className="py-4 border-t border-solid border-gray-200">
+                        <button
+                                className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-gray-100 cursor-pointer"
+                                onClick={() => navigate("/completed")}
+                            >
+                                <SquareCheck size={18} />
+                                <p>Completed</p>
+                            </button>
                         </div>
                     </div>
                 </div>
