@@ -34,7 +34,7 @@ export const ViewTaskList = () => {
 
     const listItems = (() => {
         const items: JSX.Element[] = [];
-        for (const task of tasks) {
+        for (const task of listTasks) {
             if (task.isComplete) continue;
             items.push(
                 <li key={task.id} className="flex gap-2 cursor-pointer">
