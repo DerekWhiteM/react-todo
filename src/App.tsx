@@ -12,6 +12,8 @@ import { ViewTaskList } from "./routes/view-task-list";
 import { Completed } from "./routes/completed";
 
 export const AppContext = createContext({
+    theme: "" as "light" | "dark",
+    toggleTheme: () => {},
     tasks: [] as Task[],
     taskLists: [] as TaskList[],
     createTask: (() => {}) as (title: string, taskListId: number | null) => void,
@@ -28,6 +30,7 @@ function App() {
     const [tasks, setTasks] = useState([] as Task[]);
     const [taskLists, setTaskLists] = useState([] as TaskList[]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [theme, setTheme] = useState<"light" | "dark">("light");
     const screenDimensions = useScreenDimensions();
 
     function createTask(title: string, taskListId: number | null) {
@@ -65,6 +68,12 @@ function App() {
         setIsSidebarOpen(!isSidebarOpen);
     }
 
+    function toggleTheme() {
+        const newTheme = theme === "light" ? "dark" : "light";
+        localStorage.setItem("theme", newTheme);
+        setTheme(newTheme);
+    }
+
     useEffect(() => {
         setIsSidebarOpen(window.innerWidth >= 768);
         TaskManager.load();
@@ -75,11 +84,19 @@ function App() {
             (!("theme" in localStorage) &&
                 window.matchMedia("(prefers-color-scheme: dark)").matches)
         ) {
+            setTheme("dark");
+        } else {
+            setTheme("light");
+        }
+    }, []);
+
+    useEffect(() => {
+        if (theme === "dark") {
             document.documentElement.classList.add("dark");
         } else {
             document.documentElement.classList.remove("dark");
         }
-    }, []);
+    }, [theme]);
 
     useEffect(() => {
         setIsSidebarOpen(screenDimensions.width >= 768);
@@ -88,6 +105,8 @@ function App() {
     return (
         <AppContext.Provider
             value={{
+                theme,
+                toggleTheme,
                 tasks,
                 taskLists,
                 createTask,
