@@ -7,7 +7,7 @@ import { useContext } from "react";
 export const Layout = () => {
     const { toggleSidebar } = useContext(AppContext);
     return (
-        <div className="flex h-full">
+        <div className="flex h-full bg-background">
             <Sidebar />
             <div className="w-full">
                 <button

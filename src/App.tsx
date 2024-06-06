@@ -70,6 +70,15 @@ function App() {
         TaskManager.load();
         setTasks(TaskManager.getTasks());
         setTaskLists(TaskManager.getTaskLists());
+        if (
+            localStorage.theme === "dark" ||
+            (!("theme" in localStorage) &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
     }, []);
 
     useEffect(() => {
