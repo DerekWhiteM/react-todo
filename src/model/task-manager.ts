@@ -100,6 +100,21 @@ export const TaskManager = (() => {
         save();
     }
 
+    /**
+     * Passed into Array.sort()
+     */
+    function sortByDueDate(a: Task, b: Task) {
+        if (a.dueDate === null && b.dueDate !== null) {
+            return -1;
+        } else if (a.dueDate !== null && b.dueDate === null) {
+            return 1;
+        } else if ((a.dueDate === b.dueDate)) {
+            return a.title.localeCompare(b.title);
+        } else {
+            return a.dueDate! - b.dueDate!;
+        }
+    }
+
     return {
         getTasks,
         createTask,
@@ -110,5 +125,6 @@ export const TaskManager = (() => {
         updateTaskList,
         deleteTaskList,
         load,
+        sortByDueDate,
     };
 })();

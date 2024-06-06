@@ -12,11 +12,13 @@ import {
     ContextMenuItem,
     ContextMenuTrigger,
 } from "../components/ui/context-menu";
+import { TaskManager } from "../model/task-manager";
 
 export const Inbox = () => {
     const { taskId } = useParams();
     const { tasks, deleteTask, updateTask } = useContext(AppContext);
     const unassignedTasks = tasks.filter(task => !task.taskListId);
+    unassignedTasks.sort(TaskManager.sortByDueDate);
     const task = unassignedTasks.find(task => task.id === Number(taskId)) || null;
     const navigate = useNavigate();
     const { width } = useScreenDimensions();

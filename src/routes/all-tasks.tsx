@@ -11,11 +11,13 @@ import {
     ContextMenuTrigger,
 } from "../components/ui/context-menu";
 import { CheckedState } from "@radix-ui/react-checkbox";
+import { TaskManager } from "../model/task-manager";
 
 export const AllTasks = () => {
     const { taskId } = useParams();
     const { tasks, updateTask, deleteTask } = useContext(AppContext);
     const incompleteTasks = tasks.filter(task => !task.isComplete);
+    incompleteTasks.sort(TaskManager.sortByDueDate);
     const navigate = useNavigate();
     const { width } = useScreenDimensions();
     const task = incompleteTasks.find(e => e.id === Number(taskId)) || null;
@@ -64,4 +66,3 @@ export const AllTasks = () => {
         </div>
     );
 };
-
