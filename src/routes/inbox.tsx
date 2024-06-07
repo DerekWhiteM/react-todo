@@ -2,6 +2,7 @@ import { AppContext } from "../App";
 import { Checkbox } from "../components/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { CreateTask } from "../components/CreateTask";
+import { TaskManager } from "../model/task-manager";
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useScreenDimensions } from "../hooks/use-screen-dimensions";
@@ -12,7 +13,6 @@ import {
     ContextMenuItem,
     ContextMenuTrigger,
 } from "../components/ui/context-menu";
-import { TaskManager } from "../model/task-manager";
 
 export const Inbox = () => {
     const { taskId } = useParams();
@@ -43,9 +43,9 @@ export const Inbox = () => {
                         }
                     />
                     <ContextMenu>
-                        <ContextMenuTrigger className="w-full border-b border-solid border-gray-200">
+                        <ContextMenuTrigger className="w-full border-b border-solid border-border">
                             <div
-                                className="flex space-between w-full pb-2 hover:bg-gray-100 rounded-sm px-1 pt-2"
+                                className="flex space-between w-full pb-2 hover:bg-muted rounded-sm px-1 pt-2"
                                 onClick={() => navigate(`/inbox/task/${task.id}`)}
                             >
                                 <p className="w-full">{task.title}</p>
@@ -70,7 +70,7 @@ export const Inbox = () => {
         <div className="flex h-full">
             {!hideList && (
                 <div className="w-full p-4">
-                    <h1 className="pt-1 font-semibold text-xl text-gray-700 mb-4">Inbox</h1>
+                    <h1 className="pt-1 font-semibold text-xl mb-4">Inbox</h1>
                     <CreateTask taskList={null} />
                     <ul className="mt-4">{listItems}</ul>
                 </div>

@@ -22,25 +22,25 @@ export const Sidebar = () => {
     return (
         <>
             {isSidebarOpen && (
-                <div className="h-full w-full border-solid border-gray-200 border-r text-center fixed md:static md:block md:w-[23.6rem] text-gray-700 text-[.95rem] bg-white">
-                    <div className="flex flex-col justify-between h-full w-full">
+                <div className="h-full w-full border-solid border-border border-r text-center fixed md:static md:block md:w-[23.6rem] text-foreground text-[.95rem] bg-background">
+                    <div className="h-full w-full">
                         <button
-                            className="md:hidden hover:bg-gray-100 w-full flex justify-center p-2 rounded-sm border-b border-gray-200"
+                            className="md:hidden hover:bg-muted w-full flex justify-center p-2 rounded-sm border-b border-border"
                             onClick={toggleSidebar}
                         >
                             <ChevronsRight />
                         </button>
                         <div className="p-4">
-                            <div className="pb-4 border-b border-gray-200 border-solid">
+                            <div className="pb-4 border-b border-border border-solid">
                                 <button
-                                    className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-gray-100 cursor-pointer"
+                                    className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-muted cursor-pointer"
                                     onClick={() => navigate("/all-tasks")}
                                 >
                                     <Archive size={18} />
                                     <p>All Tasks</p>
                                 </button>
                                 <button
-                                    className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-gray-100 cursor-pointer"
+                                    className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-muted cursor-pointer"
                                     onClick={() => navigate("/inbox")}
                                 >
                                     <Inbox size={18} />
@@ -58,7 +58,7 @@ export const Sidebar = () => {
                                             <ContextMenu>
                                                 <ContextMenuTrigger>
                                                     <button
-                                                        className="flex gap-2 items-center hover:bg-gray-100 p-2 rounded-sm w-full text-left text-[.95rem]"
+                                                        className="flex gap-2 items-center hover:bg-muted p-2 rounded-sm w-full text-left text-[.95rem]"
                                                         onClick={() => navigate(`/list/${list.id}`)}
                                                     >
                                                         <List size={18} />
@@ -77,9 +77,9 @@ export const Sidebar = () => {
                                     ))}
                                 </ul>
                             </div>
-                            <div className="py-4 border-t border-solid border-gray-200">
+                            <div className="py-4 border-t border-solid border-border">
                                 <button
-                                    className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-gray-100 cursor-pointer"
+                                    className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-muted cursor-pointer"
                                     onClick={() => navigate("/completed")}
                                 >
                                     <SquareCheck size={18} />

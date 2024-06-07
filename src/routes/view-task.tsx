@@ -4,6 +4,7 @@ import { Calendar } from "../components/ui/calendar";
 import { CalendarIcon, Check, ChevronsUpDown, X } from "lucide-react";
 import { ChangeEvent, FocusEvent, useContext, useState } from "react";
 import { Checkbox } from "../components/ui/checkbox";
+import { CheckedState } from "@radix-ui/react-checkbox";
 import { cn } from "../lib/utils";
 import { format } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "../components/ui/popover";
@@ -16,7 +17,6 @@ import {
     CommandInput,
     CommandItem,
 } from "../components/ui/command";
-import { CheckedState } from "@radix-ui/react-checkbox";
 
 export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void }) => {
     const { updateTask } = useContext(AppContext);
@@ -39,15 +39,15 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
     }
 
     return (
-        <div className="border-l border-solid border-gray-200 w-[38.2rem] flex flex-col text-gray-700">
-            <div className="pt-4 px-4 pb-2 border-b border-solid border-gray-200 flex items-center">
-                <div className="pr-4 mr-2 border-r border-solid border-gray-200 flex">
+        <div className="border-l border-solid border-border w-[38.2rem] flex flex-col">
+            <div className="pt-4 px-4 pb-2 border-b border-solid border-border flex items-center">
+                <div className="pr-4 mr-2 border-r border-solid border-border flex">
                     <Checkbox checked={task.isComplete} onCheckedChange={(checked: CheckedState) => onCheckedChange(task.id, checked)} />
                 </div>
                 <DatePicker date={task.dueDate} onSelect={onDateSelect} />
-                <div className="ml-auto border-l border-solid border-gray-200 pl-2">
+                <div className="ml-auto border-l border-solid border-border pl-2">
                     <button
-                        className="p-1 text-gray-500 hover:bg-gray-100 rounded-sm"
+                        className="p-1 hover:bg-muted rounded-sm"
                         onClick={onClose}
                     >
                         <X />
@@ -56,13 +56,13 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
             </div>
             <div className="p-4 h-full">
                 <input
-                    className="w-full font-semibold text-lg outline-none mb-2"
+                    className="w-full font-semibold text-lg outline-none mb-2 bg-background"
                     value={task.title}
                     name="title"
                     onChange={onNameChange}
                 />
                 <textarea
-                    className="w-full h-full resize-none outline-none"
+                    className="w-full h-full resize-none outline-none bg-background"
                     value={task.description}
                     name="description"
                     onChange={onDescriptionChange}
@@ -90,7 +90,7 @@ function DatePicker({ date, onSelect }: { date: number | null; onSelect: (value:
                     {date ? format(date, "PPP") : <span>Due Date</span>}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
+            <PopoverContent className="w-auto p-0 border-solid border-border">
                 <Calendar
                     mode="single"
                     selected={date ? new Date(date) : undefined}
@@ -131,7 +131,7 @@ function ListSelector({ taskId, taskListId }: { taskId: number; taskListId: numb
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
+            <PopoverContent className="w-[200px] p-0 border-solid border-border">
                 <Command>
                     <CommandInput placeholder="Search list..." />
                     <CommandEmpty>No list found.</CommandEmpty>

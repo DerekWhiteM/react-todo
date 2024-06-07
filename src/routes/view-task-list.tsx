@@ -1,7 +1,9 @@
 import { AppContext } from "../App";
-import { Checkbox } from "../components/ui/checkbox";
-import { CreateTask } from "../components/CreateTask";
 import { ChangeEvent, useContext } from "react";
+import { Checkbox } from "../components/ui/checkbox";
+import { CheckedState } from "@radix-ui/react-checkbox";
+import { CreateTask } from "../components/CreateTask";
+import { TaskManager } from "../model/task-manager";
 import { useNavigate, useParams } from "react-router-dom";
 import { useScreenDimensions } from "../hooks/use-screen-dimensions";
 import { ViewTask } from "./view-task";
@@ -11,8 +13,6 @@ import {
     ContextMenuItem,
     ContextMenuTrigger,
 } from "../components/ui/context-menu";
-import { CheckedState } from "@radix-ui/react-checkbox";
-import { TaskManager } from "../model/task-manager";
 
 export const ViewTaskList = () => {
     const { taskListId, taskId } = useParams();
@@ -42,9 +42,9 @@ export const ViewTaskList = () => {
                 <li key={task.id} className="flex gap-2 cursor-pointer">
                     <Checkbox className="mt-[.75rem]" checked={task.isComplete} onCheckedChange={(checked: CheckedState) => onCheckedChange(task.id, checked)} />
                     <ContextMenu>
-                        <ContextMenuTrigger className="w-full border-b border-solid border-gray-200">
+                        <ContextMenuTrigger className="w-full border-b border-solid border-border">
                             <div
-                                className="flex space-between w-full pb-2 hover:bg-gray-100 rounded-sm px-1 pt-2"
+                                className="flex space-between w-full pb-2 hover:bg-muted rounded-sm px-1 pt-2"
                                 onClick={() => navigate(`/list/${taskListId}/task/${task.id}`)}
                             >
                                 <p className="w-full">{task.title}</p>
@@ -70,7 +70,7 @@ export const ViewTaskList = () => {
             {!hideList && (
                 <div className="w-full p-4">
                     <input
-                        className="pt-1 font-semibold text-xl text-gray-700 mb-4 outline-none w-full"
+                        className="pt-1 font-semibold text-xl mb-4 outline-none w-full bg-background"
                         name="title"
                         onChange={onNameChange}
                         value={taskList.title}

@@ -34,7 +34,7 @@ export function CreateTaskList() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <button
-                    className="flex items-center text-sm border border-gray-200 p-1 gap-1 hover:bg-gray-100"
+                    className="flex items-center text-sm border border-border p-1 gap-1 hover:bg-muted"
                     onClick={() => setOpen(true)}
                 >
                     <Plus size={16} />
