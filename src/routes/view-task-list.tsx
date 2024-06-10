@@ -66,7 +66,7 @@ export const ViewTaskList = () => {
     })();
 
     return (
-        <div className="flex h-full">
+        <div className="flex grow">
             {!hideList && (
                 <div className="w-full p-4">
                     <input

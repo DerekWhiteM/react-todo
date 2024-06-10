@@ -67,7 +67,7 @@ export const Inbox = () => {
     })();
 
     return (
-        <div className="flex h-full">
+        <div className="flex grow">
             {!hideList && (
                 <div className="w-full p-4">
                     <h1 className="pt-1 font-semibold text-xl mb-4">Inbox</h1>

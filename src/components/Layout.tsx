@@ -9,7 +9,7 @@ export const Layout = () => {
     return (
         <div className="flex h-full bg-background">
             <Sidebar />
-            <div className="w-full">
+            <div className="w-full h-full flex flex-col md:flex-row">
                 <button
                     className="md:hidden hover:bg-muted w-full flex justify-center p-2 rounded-sm border-b border-border"
                     onClick={toggleSidebar}

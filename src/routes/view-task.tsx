@@ -54,7 +54,7 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
                     </button>
                 </div>
             </div>
-            <div className="p-4 h-full">
+            <div className="p-4 flex flex-col grow">
                 <input
                     className="w-full font-semibold text-lg outline-none mb-2 bg-background"
                     value={task.title}
@@ -62,7 +62,7 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
                     onChange={onNameChange}
                 />
                 <textarea
-                    className="w-full h-full resize-none outline-none bg-background"
+                    className="w-full resize-none outline-none bg-background grow"
                     value={task.description}
                     name="description"
                     onChange={onDescriptionChange}
