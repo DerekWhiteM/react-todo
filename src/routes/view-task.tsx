@@ -33,6 +33,10 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
         updateTask(task.id, { dueDate: value.getTime() });
     }
 
+    function onDateClear() {
+        updateTask(task.id, { dueDate: null });
+    }
+
     function onCheckedChange(taskId: number, checked: CheckedState) {
         if (checked === "indeterminate") return;
         updateTask(taskId, { isComplete: checked });
@@ -44,7 +48,7 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
                 <div className="pr-4 mr-2 border-r border-solid border-border flex">
                     <Checkbox checked={task.isComplete} onCheckedChange={(checked: CheckedState) => onCheckedChange(task.id, checked)} />
                 </div>
-                <DatePicker date={task.dueDate} onSelect={onDateSelect} />
+                <DatePicker date={task.dueDate} onSelect={onDateSelect} onClear={onDateClear} />
                 <div className="ml-auto border-l border-solid border-border pl-2">
                     <button
                         className="p-1 hover:bg-muted rounded-sm"
@@ -75,7 +79,7 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
     );
 };
 
-function DatePicker({ date, onSelect }: { date: number | null; onSelect: (value: Date) => void }) {
+function DatePicker({ date, onSelect, onClear }: { date: number | null; onSelect: (value: Date) => void; onClear: () => void }) {
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -97,6 +101,9 @@ function DatePicker({ date, onSelect }: { date: number | null; onSelect: (value:
                     onSelect={onSelect as SelectSingleEventHandler}
                     initialFocus
                 />
+                <div className="w-full text-center px-4 pb-4">
+                    <Button className="w-full" onClick={onClear}>Clear</Button>
+                </div>
             </PopoverContent>
         </Popover>
     );
