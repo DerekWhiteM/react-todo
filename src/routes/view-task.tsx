@@ -17,6 +17,7 @@ import {
     CommandInput,
     CommandItem,
 } from "../components/ui/command";
+import { ResizablePanel } from "../components/ui/resizable";
 
 export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void }) => {
     const { updateTask } = useContext(AppContext);
@@ -43,7 +44,7 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
     }
 
     return (
-        <div className="border-l border-solid border-border w-[38.2rem] flex flex-col">
+        <ResizablePanel defaultSize={38.2} className="flex flex-col">
             <div className="pt-4 px-4 pb-2 border-b border-solid border-border flex items-center">
                 <div className="pr-4 mr-2 border-r border-solid border-border flex">
                     <Checkbox checked={task.isComplete} onCheckedChange={(checked: CheckedState) => onCheckedChange(task.id, checked)} />
@@ -75,7 +76,7 @@ export const ViewTask = ({ task, onClose }: { task: Task; onClose: () => void })
             <div className="w-full flex justify-center p-4">
                 <ListSelector taskId={task.id} taskListId={task.taskListId} />
             </div>
-        </div>
+        </ResizablePanel>
     );
 };
 

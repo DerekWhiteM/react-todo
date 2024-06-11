@@ -13,6 +13,7 @@ import {
     ContextMenuItem,
     ContextMenuTrigger,
 } from "../components/ui/context-menu";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../components/ui/resizable";
 
 export const ViewTaskList = () => {
     const { taskListId, taskId } = useParams();
@@ -66,9 +67,9 @@ export const ViewTaskList = () => {
     })();
 
     return (
-        <div className="flex grow">
+        <ResizablePanelGroup autoSaveId="persistence" direction="horizontal" className="flex grow">
             {!hideList && (
-                <div className="w-full p-4">
+                <ResizablePanel className="w-full p-4">
                     <input
                         className="pt-1 font-semibold text-xl mb-4 outline-none w-full bg-background"
                         name="title"
@@ -77,9 +78,10 @@ export const ViewTaskList = () => {
                     />
                     <CreateTask taskList={taskList} />
                     <ul className="mt-4">{listItems}</ul>
-                </div>
+                </ResizablePanel>
             )}
+            <ResizableHandle />
             {task && <ViewTask task={task} onClose={() => navigate(`/list/${taskListId}`)} />}
-        </div>
+        </ResizablePanelGroup>
     );
 };
