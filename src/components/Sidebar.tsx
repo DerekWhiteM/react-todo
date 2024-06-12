@@ -11,13 +11,34 @@ import {
 } from "./ui/context-menu";
 
 export const Sidebar = () => {
-    const { theme, toggleTheme, isSidebarOpen, toggleSidebar, taskLists, deleteTaskList } =
+    const { tasks, theme, toggleTheme, isSidebarOpen, toggleSidebar, taskLists, deleteTaskList } =
         useContext(AppContext);
     const nav = useNavigate();
     function navigate(path: string) {
         nav(path);
         if (window.innerWidth < 768) {
             toggleSidebar();
+        }
+    }
+    let numAll = 0;
+    let numInbox = 0;
+    let numCompleted = 0;
+    const listTotals: Array<{ taskListId: number; numTasks: number }> = taskLists.map(taskList => ({
+        taskListId: taskList.id,
+        numTasks: 0,
+    }));
+    for (const task of tasks) {
+        if (task.isComplete) {
+            numCompleted++;
+            continue;
+        } else {
+            numAll++;
+        }
+        if (!task.taskListId) {
+            numInbox++;
+        } else {
+            const lTotal = listTotals.find(listTotal => listTotal.taskListId === task.taskListId);
+            if (lTotal) lTotal.numTasks++;
         }
     }
     return (
@@ -39,14 +60,22 @@ export const Sidebar = () => {
                                         onClick={() => navigate("/all-tasks")}
                                     >
                                         <Archive size={18} />
-                                        <p>All Tasks</p>
+                                        <div className="w-full flex justify-between">
+                                            <p>All Tasks</p>
+                                            <p className="text-muted-foreground">{numAll || ""}</p>
+                                        </div>
                                     </button>
                                     <button
                                         className="flex items-center w-full p-2 gap-2 rounded-sm hover:bg-muted cursor-pointer"
                                         onClick={() => navigate("/inbox")}
                                     >
                                         <Inbox size={18} />
-                                        <p>Inbox</p>
+                                        <div className="w-full flex justify-between">
+                                            <p>Inbox</p>
+                                            <p className="text-muted-foreground">
+                                                {numInbox || ""}
+                                            </p>
+                                        </div>
                                     </button>
                                 </div>
                                 <div className="py-4 text-left">
@@ -66,7 +95,16 @@ export const Sidebar = () => {
                                                             }
                                                         >
                                                             <List size={18} />
-                                                            <p>{list.title}</p>
+                                                            <div className="w-full flex justify-between">
+                                                                <p>{list.title}</p>
+                                                                <p className="text-muted-foreground">
+                                                                    {listTotals.find(
+                                                                        listTotal =>
+                                                                            listTotal.taskListId ===
+                                                                            list.id
+                                                                    )?.numTasks || ""}
+                                                                </p>
+                                                            </div>
                                                         </button>
                                                     </ContextMenuTrigger>
                                                     <ContextMenuContent>
@@ -87,7 +125,12 @@ export const Sidebar = () => {
                                         onClick={() => navigate("/completed")}
                                     >
                                         <SquareCheck size={18} />
-                                        <p>Completed</p>
+                                        <div className="w-full flex justify-between">
+                                            <p>Completed</p>
+                                            <p className="text-muted-foreground">
+                                                {numCompleted || ""}
+                                            </p>
+                                        </div>
                                     </button>
                                 </div>
                             </div>
