@@ -1,87 +1,21 @@
 import { AppContext } from "../App";
-import { ChangeEvent, useContext } from "react";
-import { Checkbox } from "../components/ui/checkbox";
-import { CheckedState } from "@radix-ui/react-checkbox";
-import { CreateTask } from "../components/CreateTask";
+import { TaskList } from "../components/TaskList";
 import { TaskManager } from "../model/task-manager";
-import { useNavigate, useParams } from "react-router-dom";
-import { useScreenDimensions } from "../hooks/use-screen-dimensions";
-import { ViewTask } from "./view-task";
-import {
-    ContextMenu,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuTrigger,
-} from "../components/ui/context-menu";
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../components/ui/resizable";
+import { useContext } from "react";
+import { useParams } from "react-router-dom";
 
 export const ViewTaskList = () => {
     const { taskListId, taskId } = useParams();
-    const { tasks, taskLists, deleteTask, updateTaskList, updateTask } = useContext(AppContext);
+    const { tasks, taskLists } = useContext(AppContext);
     const taskList = taskLists.find(l => l.id === Number(taskListId)) || null;
     const listTasks = tasks.filter(e => e.taskListId === Number(taskListId) && !e.isComplete);
     listTasks.sort(TaskManager.sortByDueDate);
-    const task = listTasks.find(e => e.id === Number(taskId)) || null;
-    const navigate = useNavigate();
-    const { width } = useScreenDimensions();
-    const hideList = (task && width < 768) || !taskList;
-
-    function onNameChange(e: ChangeEvent<HTMLInputElement>) {
-        updateTaskList(Number(taskListId), { title: e.target.value });
-    }
-
-    function onCheckedChange(taskId: number, checked: CheckedState) {
-        if (checked === "indeterminate") return;
-        updateTask(taskId, { isComplete: checked });
-    }
-
-    const listItems = (() => {
-        const items: JSX.Element[] = [];
-        for (const task of listTasks) {
-            if (task.isComplete) continue;
-            items.push(
-                <li key={task.id} className="flex gap-2 cursor-pointer">
-                    <Checkbox className="mt-[.75rem]" checked={task.isComplete} onCheckedChange={(checked: CheckedState) => onCheckedChange(task.id, checked)} />
-                    <ContextMenu>
-                        <ContextMenuTrigger className="w-full border-b border-solid border-border">
-                            <div
-                                className="flex space-between w-full pb-2 hover:bg-muted rounded-sm px-1 pt-2"
-                                onClick={() => navigate(`/list/${taskListId}/task/${task.id}`)}
-                            >
-                                <p className="w-full">{task.title}</p>
-                                <p className="text-nowrap">
-                                    {task.dueDate ? new Date(task.dueDate).toDateString() : ""}
-                                </p>
-                            </div>
-                        </ContextMenuTrigger>
-                        <ContextMenuContent>
-                            <ContextMenuItem onClick={() => deleteTask(task.id)}>
-                                Delete
-                            </ContextMenuItem>
-                        </ContextMenuContent>
-                    </ContextMenu>
-                </li>
-            );
-        }
-        return items;
-    })();
-
     return (
-        <ResizablePanelGroup autoSaveId="persistence" direction="horizontal" className="flex grow">
-            {!hideList && (
-                <ResizablePanel className="w-full p-4">
-                    <input
-                        className="pt-1 font-semibold text-xl mb-4 outline-none w-full bg-background"
-                        name="title"
-                        onChange={onNameChange}
-                        value={taskList.title}
-                    />
-                    <CreateTask taskList={taskList} />
-                    <ul className="mt-4">{listItems}</ul>
-                </ResizablePanel>
-            )}
-            <ResizableHandle />
-            {task && <ViewTask task={task} onClose={() => navigate(`/list/${taskListId}`)} />}
-        </ResizablePanelGroup>
+        <TaskList
+            path={`/list/${taskListId}`}
+            taskId={taskId ? parseInt(taskId) : null}
+            taskListId={taskList?.id}
+            tasks={listTasks}
+        />
     );
 };
