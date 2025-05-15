@@ -22,7 +22,7 @@
 
         // Authorization scopes required by the API; multiple scopes can be
         // included, separated by spaces.
-        const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+        const SCOPES = 'https://www.googleapis.com/auth/drive.appdata';
 
         let tokenClient;
         let gapiInited = false;
@@ -84,6 +84,7 @@
             let response;
             try {
                 response = await gapi.client.drive.files.list({
+                    spaces: 'appDataFolder',
                     'pageSize': 10,
                     'fields': 'files(id, name)',
                 });
@@ -92,8 +93,9 @@
                 return;
             }
             const files = response.result.files;
-            if (!files || files.length == 0) {
-                console.log('No files found.');
+            const todoListFile = files.find(file => file.name === 'todo-list.json');
+            if (!todoListFile) {
+                console.log('File not found.');
                 return;
             }
             // Flatten to string to display
