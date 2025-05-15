@@ -9,5 +9,18 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script>
+      function handleCredentialResponse(response) {
+        console.log("Encoded JWT ID token: " + response.credential);
+      }
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id: "618537968380-pcen9n85vd35jpfkjc9325ehekr4akl9.apps.googleusercontent.com",
+          callback: handleCredentialResponse
+        });
+        google.accounts.id.prompt();
+      }
+    </script>
   </body>
 </html>
