@@ -5,6 +5,12 @@ export const TaskManager = (() => {
     let tasks: Task[] = [];
     let taskLists: TaskList[] = [];
 
+    function setState(t: Task[], tl: TaskList[]) {
+        tasks = t;
+        taskLists = tl;
+        save();
+    }
+
     function load() {
         tasks = JSON.parse(localStorage.getItem("tasks") || "[]") as Task[];
         taskLists = JSON.parse(localStorage.getItem("taskLists") || "[]") as TaskList[];
@@ -116,6 +122,7 @@ export const TaskManager = (() => {
     }
 
     return {
+        setState,
         getTasks,
         createTask,
         updateTask,

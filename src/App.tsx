@@ -16,6 +16,7 @@ export const AppContext = createContext({
     toggleTheme: () => {},
     tasks: [] as Task[],
     taskLists: [] as TaskList[],
+    setAppState: (() => {}) as (tasks: Task[], taskLists: TaskList[]) => void,
     createTask: (() => {}) as (title: string, taskListId: number | null) => void,
     updateTask: (() => {}) as (taskId: number, fields: TaskUpdate) => void,
     deleteTask: (() => {}) as (taskId: number) => void,
@@ -32,6 +33,12 @@ function App() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [theme, setTheme] = useState<"light" | "dark">("light");
     const screenDimensions = useScreenDimensions();
+
+    function setAppState(tasks: Task[], taskLists: TaskList[]) {
+        setTasks(tasks);
+        setTaskLists(taskLists);
+        TaskManager.setState(tasks, taskLists);
+    }
 
     function createTask(title: string, taskListId: number | null) {
         TaskManager.createTask(title, taskListId, "", null, "none");
@@ -109,6 +116,7 @@ function App() {
                 toggleTheme,
                 tasks,
                 taskLists,
+                setAppState,
                 createTask,
                 updateTask,
                 deleteTask,

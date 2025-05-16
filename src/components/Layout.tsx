@@ -3,9 +3,10 @@ import { ChevronsLeft } from "lucide-react";
 import { Outlet } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { useContext } from "react";
+import { GoogleDriveIntegration } from "./GoogleDriveIntegration.jsx";
 
 export const Layout = () => {
-    const { toggleSidebar } = useContext(AppContext);
+    const { toggleSidebar, tasks, taskLists, setAppState } = useContext(AppContext);
     return (
         <div className="flex h-full bg-background">
             <Sidebar />
@@ -18,6 +19,7 @@ export const Layout = () => {
                 </button>
                 <Outlet />
             </div>
+            <GoogleDriveIntegration appState={{ tasks, taskLists }} setAppState={setAppState} />
         </div>
     );
 };
