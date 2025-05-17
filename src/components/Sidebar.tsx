@@ -9,10 +9,18 @@ import {
     ContextMenuItem,
     ContextMenuTrigger,
 } from "./ui/context-menu";
+import { GoogleDriveIntegration } from "./GoogleDriveIntegration";
 
 export const Sidebar = () => {
-    const { tasks, theme, toggleTheme, isSidebarOpen, toggleSidebar, taskLists, deleteTaskList } =
-        useContext(AppContext);
+    const {
+        tasks,
+        theme,
+        toggleTheme,
+        isSidebarOpen,
+        toggleSidebar,
+        taskLists,
+        deleteTaskList,
+    } = useContext(AppContext);
     const nav = useNavigate();
     function navigate(path: string) {
         nav(path);
@@ -79,7 +87,7 @@ export const Sidebar = () => {
                                     </button>
                                 </div>
                                 <div className="py-4 text-left">
-                                    <div className="flex items-center px-2 mb-4 justify-between">
+                                    <div className="flex items-center pl-2 mb-4 justify-between">
                                         <p className="text-[.95rem]">Lists</p>
                                         <CreateTaskList />
                                     </div>
@@ -132,6 +140,9 @@ export const Sidebar = () => {
                                             </p>
                                         </div>
                                     </button>
+                                </div>
+                                <div className="py-4 border-t border-solid border-border">
+                                    <GoogleDriveIntegration />
                                 </div>
                             </div>
                             <div>

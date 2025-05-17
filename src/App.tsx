@@ -10,6 +10,7 @@ import { TaskManager } from "./model/task-manager";
 import { useScreenDimensions } from "./hooks/use-screen-dimensions";
 import { ViewTaskList } from "./routes/view-task-list";
 import { Completed } from "./routes/completed";
+import { GoogleDriveContextProvider } from "./components/GoogleDriveContext";
 
 export const AppContext = createContext({
     theme: "" as "light" | "dark",
@@ -127,15 +128,17 @@ function App() {
                 toggleSidebar,
             }}
         >
-            <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Index />} />
-                    <Route path="/all-tasks/task?/:taskId?" element={<AllTasks />} />
-                    <Route path="/inbox/task?/:taskId?" element={<Inbox />} />
-                    <Route path="/completed/task?/:taskId?" element={<Completed />} />
-                    <Route path="/list/:taskListId/task?/:taskId?" element={<ViewTaskList />} />
-                </Route>
-            </Routes>
+            <GoogleDriveContextProvider appState={{ tasks, taskLists }} setAppState={setAppState}>
+                <Routes>
+                    <Route path="/" element={<Layout />}>
+                        <Route index element={<Index />} />
+                        <Route path="/all-tasks/task?/:taskId?" element={<AllTasks />} />
+                        <Route path="/inbox/task?/:taskId?" element={<Inbox />} />
+                        <Route path="/completed/task?/:taskId?" element={<Completed />} />
+                        <Route path="/list/:taskListId/task?/:taskId?" element={<ViewTaskList />} />
+                    </Route>
+                </Routes>
+            </GoogleDriveContextProvider>
         </AppContext.Provider>
     );
 }
