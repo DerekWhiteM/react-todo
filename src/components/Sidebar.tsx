@@ -86,12 +86,12 @@ export const Sidebar = () => {
                                         </div>
                                     </button>
                                 </div>
-                                <div className="py-4 text-left">
-                                    <div className="flex items-center pl-2 mb-4 justify-between">
+                                <div className="pt-4 text-left">
+                                    <div className="flex items-center pl-2 justify-between">
                                         <p className="text-[.95rem]">Lists</p>
                                         <CreateTaskList />
                                     </div>
-                                    <ul>
+                                    <ul className="py-2">
                                         {taskLists.map(list => (
                                             <li key={list.title}>
                                                 <ContextMenu>
